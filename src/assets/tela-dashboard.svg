@@ -1,0 +1,39 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="900" rx="24" fill="#FFFFFF"/>
+  <rect width="260" height="900" rx="24" fill="#F7F8FC"/>
+  <path d="M259 0H1440V900H259V0Z" fill="#FFFFFF"/>
+  <path d="M259.5 0V900" stroke="#E4E7EF"/>
+  <g font-family="Arial, sans-serif">
+    <circle cx="42" cy="45" r="19" stroke="#3E52C5" stroke-width="3" opacity=".35"/>
+    <circle cx="42" cy="45" r="11" stroke="#3E52C5" stroke-width="3" opacity=".7"/>
+    <circle cx="42" cy="45" r="5" fill="#3E52C5"/>
+    <text x="75" y="51" font-size="22" font-weight="700" fill="#20243A">Orbix</text><text x="128" y="51" font-size="22" font-weight="700" fill="#3E52C5">Hub</text>
+    <rect x="18" y="92" width="224" height="70" rx="15" fill="#EDF0FF"/>
+    <circle cx="51" cy="127" r="18" fill="#DDE3FF"/><path d="M43 123H59V135H43V123Z" stroke="#3E52C5" stroke-width="2"/><path d="M46 119H56V123H46V119Z" stroke="#3E52C5" stroke-width="2"/>
+    <text x="79" y="123" font-size="14" font-weight="700" fill="#20243A">Oficina Horizonte</text><text x="79" y="145" font-size="12" fill="#7A8196">Workspace principal</text>
+    <text x="22" y="203" font-size="11" font-weight="700" letter-spacing="1.5" fill="#9AA1B4">MENU</text>
+    <g font-size="14" fill="#6E758B">
+      <rect x="14" y="226" width="232" height="45" rx="12" fill="#2B3471"/><text x="53" y="254" fill="#FFFFFF" font-weight="700">Início</text><circle cx="36" cy="248" r="8" fill="#FFFFFF" opacity=".9"/>
+      <text x="53" y="306">Ordens de serviço</text><text x="53" y="358">Estoque</text><text x="53" y="410">Clientes</text><text x="53" y="462">Relatórios</text><text x="53" y="514">Agenda</text><text x="53" y="566">Equipe</text><text x="53" y="618">Configurações</text>
+    </g>
+    <path d="M0 827H260" stroke="#E4E7EF"/><circle cx="42" cy="862" r="19" fill="#E7EBFF"/><text x="75" y="858" font-size="14" font-weight="700" fill="#20243A">Ana Ribeiro</text><text x="75" y="878" font-size="11" fill="#7A8196">proprietária</text>
+
+    <text x="306" y="50" font-size="22" font-weight="700" fill="#20243A">Início</text><circle cx="1392" cy="40" r="18" fill="#F1F3F8"/><path d="M1387 40L1392 35L1397 40L1397 45H1387V40Z" stroke="#606980" stroke-width="2"/>
+    <path d="M306 81H1396" stroke="#E8EAF1"/>
+    <text x="306" y="130" font-size="32" font-weight="700" fill="#20243A">Olá, Ana</text><text x="306" y="158" font-size="16" fill="#7A8196">Resumo da Oficina Horizonte · Atualizado agora</text>
+    <g font-size="13" font-weight="700"><rect x="306" y="186" width="76" height="34" rx="17" fill="#EEF1F7"/><text x="327" y="208" fill="#6E758B">Hoje</text><rect x="390" y="186" width="84" height="34" rx="17" fill="#3E52C5"/><text x="410" y="208" fill="#FFFFFF">30 dias</text><rect x="482" y="186" width="110" height="34" rx="17" fill="#EEF1F7"/><text x="501" y="208" fill="#6E758B">Mês atual</text></g>
+    <g>
+      <rect x="306" y="246" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="326" y="266" width="42" height="42" rx="12" fill="#DFF7EF"/><path d="M337 282H357V293H337V282Z" stroke="#12A979" stroke-width="2"/><text x="326" y="343" font-size="28" font-weight="700" fill="#129B73">R$ 28.450</text><text x="326" y="368" font-size="14" fill="#7A8196">Faturamento</text>
+      <rect x="668" y="246" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="688" y="266" width="42" height="42" rx="12" fill="#E9EEFF"/><path d="M700 279H718V295H700V279Z" stroke="#3E52C5" stroke-width="2"/><text x="688" y="343" font-size="28" font-weight="700" fill="#20243A">R$ 486</text><text x="688" y="368" font-size="14" fill="#7A8196">Ticket médio</text>
+      <rect x="1030" y="246" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="1050" y="266" width="42" height="42" rx="12" fill="#FFF1DD"/><path d="M1060 288L1067 280L1076 293" stroke="#C77A18" stroke-width="2"/><text x="1050" y="343" font-size="28" font-weight="700" fill="#20243A">7</text><text x="1050" y="368" font-size="14" fill="#7A8196">OS em andamento</text>
+      <rect x="306" y="410" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="326" y="430" width="42" height="42" rx="12" fill="#FDEBEB"/><circle cx="347" cy="451" r="9" stroke="#D55B64" stroke-width="2"/><text x="326" y="507" font-size="28" font-weight="700" fill="#20243A">1</text><text x="326" y="532" font-size="14" fill="#7A8196">OS atrasada</text>
+      <rect x="668" y="410" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="688" y="430" width="42" height="42" rx="12" fill="#EEE9FF"/><circle cx="709" cy="451" r="9" stroke="#7457D9" stroke-width="2"/><text x="688" y="507" font-size="28" font-weight="700" fill="#20243A">42</text><text x="688" y="532" font-size="14" fill="#7A8196">Clientes ativos</text>
+      <rect x="1030" y="410" width="344" height="144" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><rect x="1050" y="430" width="42" height="42" rx="12" fill="#E6F6F8"/><path d="M1060 444H1077V458H1060V444Z" stroke="#1599A3" stroke-width="2"/><text x="1050" y="507" font-size="28" font-weight="700" fill="#20243A">R$ 42.890</text><text x="1050" y="532" font-size="14" fill="#7A8196">Valor em estoque</text>
+    </g>
+    <rect x="306" y="582" width="506" height="264" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><text x="330" y="621" font-size="16" font-weight="700" fill="#20243A">Faturamento por semana</text><text x="330" y="645" font-size="13" fill="#7A8196">Últimos 30 dias</text>
+    <path d="M344 794H776M344 748H776M344 702H776" stroke="#E8EAF1"/><path d="M362 764C408 731 426 750 466 718C510 683 532 737 578 701C622 666 653 696 694 654C723 624 747 641 770 611" stroke="#3E52C5" stroke-width="4" fill="none"/><path d="M362 764C408 731 426 750 466 718C510 683 532 737 578 701C622 666 653 696 694 654C723 624 747 641 770 611V794H362V764Z" fill="#EEF1FF" opacity=".72"/><g font-size="11" fill="#9AA1B4"><text x="356" y="817">05/06</text><text x="478" y="817">12/06</text><text x="600" y="817">19/06</text><text x="724" y="817">26/06</text></g>
+    <rect x="830" y="582" width="544" height="264" rx="18" fill="#FFFFFF" stroke="#E4E7EF"/><text x="854" y="621" font-size="16" font-weight="700" fill="#20243A">OS em andamento</text><text x="1287" y="621" font-size="13" font-weight="700" fill="#3E52C5">Ver todas</text>
+    <g font-size="14"><rect x="854" y="652" width="496" height="55" rx="12" fill="#F7F8FC"/><rect x="870" y="668" width="82" height="24" rx="12" fill="#E9EEFF"/><text x="884" y="685" font-size="11" font-weight="700" fill="#3E52C5">#OS-0184</text><text x="974" y="677" font-weight="700" fill="#20243A">Carlos Henrique</text><text x="974" y="695" font-size="12" fill="#7A8196">Honda Civic · revisão</text><text x="1288" y="684" font-size="12" fill="#7A8196">há 2 h</text>
+    <rect x="854" y="719" width="496" height="55" rx="12" fill="#F7F8FC"/><rect x="870" y="735" width="82" height="24" rx="12" fill="#DFF7EF"/><text x="884" y="752" font-size="11" font-weight="700" fill="#129B73">#OS-0182</text><text x="974" y="744" font-weight="700" fill="#20243A">Marina Oliveira</text><text x="974" y="762" font-size="12" fill="#7A8196">Fiat Argo · freios</text><text x="1288" y="751" font-size="12" fill="#7A8196">há 4 h</text></g>
+  </g>
+</svg>

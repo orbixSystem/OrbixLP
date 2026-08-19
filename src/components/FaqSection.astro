@@ -1,0 +1,191 @@
+---
+import { contact } from '../../site.config';
+
+const questions = [
+  {
+    id: 'instalacao',
+    question: 'Preciso instalar alguma coisa?',
+    answer:
+      'Não. O OrbixHub funciona no navegador. A experiência pode ser usada no computador e no celular, com acesso conforme o plano da oficina.',
+  },
+  {
+    id: 'internet',
+    question: 'E se a internet da oficina cair?',
+    answer:
+      'O fluxo essencial continua disponível e os lançamentos são sincronizados quando a conexão volta. Esta LP apresenta a lógica da experiência; os detalhes da implantação são confirmados na apresentação.',
+  },
+  {
+    id: 'usuarios',
+    question: 'Posso começar com poucos usuários?',
+    answer:
+      'Sim. Os planos foram organizados para começar pequeno e aumentar conforme a equipe e a operação crescem.',
+  },
+  {
+    id: 'dados',
+    question: 'Os dados mostrados são reais?',
+    answer:
+      'Não. Todas as telas e números desta apresentação são fictícios e servem apenas para demonstrar como o sistema pode ser usado.',
+  },
+];
+---
+
+<section class="section section-white" id="duvidas">
+  <div class="container faq-layout">
+    <div class="faq-intro reveal">
+      <p class="eyebrow">Ainda ficou alguma dúvida?</p>
+      <h2>Resposta direta, sem letra miúda.</h2>
+      <p class="lede">
+        Se a sua pergunta não estiver aqui, envie um e-mail e a equipe responde com o contexto da
+        sua oficina.
+      </p>
+      <a class="btn btn-secondary" href={`mailto:${contact.email}`}>Falar com a equipe</a>
+    </div>
+
+    <div class="faq-list">
+      {
+        questions.map((item) => (
+          <article class="faq-item reveal">
+            <h3 class="faq-heading">
+              <button
+                class="faq-question"
+                type="button"
+                aria-expanded="false"
+                aria-controls={`resposta-${item.id}`}
+                data-faq-trigger
+              >
+                <span>{item.question}</span>
+                <span class="faq-toggle" aria-hidden="true">
+                  +
+                </span>
+              </button>
+            </h3>
+            <div class="faq-answer" id={`resposta-${item.id}`} data-faq-panel inert>
+              <div>
+                <p>{item.answer}</p>
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-layout {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: 58px;
+  }
+
+  .faq-intro h2 {
+    margin-bottom: 18px;
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--line);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .faq-heading {
+    margin: 0;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: normal;
+    line-height: inherit;
+  }
+
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 22px 0;
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: left;
+  }
+
+  .faq-question span:first-child {
+    padding-right: 20px;
+  }
+
+  .faq-toggle {
+    display: grid;
+    place-items: center;
+    flex: 0 0 28px;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    color: var(--blue);
+    font-size: 1.15rem;
+    transition:
+      transform 0.25s,
+      background 0.25s;
+  }
+
+  .faq-item.is-open .faq-toggle {
+    border-color: var(--blue);
+    background: var(--blue);
+    color: var(--white);
+    transform: rotate(45deg);
+  }
+
+  .faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.35s var(--ease);
+  }
+
+  .faq-answer > div {
+    overflow: hidden;
+  }
+
+  .faq-answer p {
+    padding: 0 45px 22px 0;
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .faq-item.is-open .faq-answer {
+    grid-template-rows: 1fr;
+  }
+
+  @media (max-width: 760px) {
+    .faq-layout {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .faq-question {
+      padding: 18px 0;
+      font-size: 0.9rem;
+    }
+
+    .faq-answer p {
+      font-size: 0.82rem;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-faq-trigger]').forEach((trigger) => {
+    trigger.addEventListener('click', () => {
+      const item = trigger.closest('.faq-item');
+      const panel = item?.querySelector<HTMLElement>('[data-faq-panel]');
+      if (!item || !panel) return;
+
+      const open = item.classList.toggle('is-open');
+      trigger.setAttribute('aria-expanded', String(open));
+      // Recolhido, o texto sai da ordem de foco e da árvore de acessibilidade —
+      // no preview ele continuava legível para leitores de tela.
+      panel.toggleAttribute('inert', !open);
+    });
+  });
+</script>

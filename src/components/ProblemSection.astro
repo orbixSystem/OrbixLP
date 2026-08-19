@@ -1,0 +1,162 @@
+---
+const cards = [
+  {
+    number: '01',
+    title: 'OS espalhada',
+    text: 'Orçamento no papel, foto no WhatsApp, histórico em outra tela.',
+  },
+  {
+    number: '02',
+    title: 'Estoque no escuro',
+    text: 'A peça sai, mas ninguém atualiza. O alerta chega depois da falta.',
+  },
+  {
+    number: '03',
+    title: 'Caixa sem contexto',
+    text: 'Você sabe o total, mas não sabe exatamente de onde ele veio.',
+  },
+  {
+    number: '04',
+    title: 'Cliente perguntando',
+    text: 'Mais ligações para responder o que um link poderia mostrar.',
+  },
+];
+---
+
+<section class="section section-white" id="problema">
+  <div class="container">
+    <div class="section-heading reveal">
+      <p class="eyebrow">Menos improviso, mais controle</p>
+      <h2>A rotina da oficina não deveria depender de quatro abas e uma memória boa.</h2>
+      <p class="lede">
+        Quando cada parte da operação vive num lugar, a informação chega tarde, o retrabalho cresce
+        e a gestão perde tempo conferindo o que já deveria estar claro.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+      <p class="problem-note reveal">
+        O OrbixHub junta o que já acontece na sua oficina e cria um caminho simples entre
+        <mark>serviço, peça, dinheiro e cliente.</mark>
+      </p>
+
+      <div class="problem-list">
+        {
+          cards.map((card, index) => (
+            <article class:list={['problem-card', 'reveal', `reveal-delay-${(index % 2) + 1}`]}>
+              <span class="number" aria-hidden="true">
+                {card.number}
+              </span>
+              <strong>{card.title}</strong>
+              <p>{card.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    align-items: start;
+    gap: 34px;
+    margin-top: 30px;
+  }
+
+  .problem-note {
+    padding: 24px 0;
+    border-top: 2px solid var(--ink);
+    color: var(--ink-2);
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    line-height: 1.35;
+  }
+
+  .problem-note mark {
+    padding: 2px 5px;
+    background: var(--orange-pale);
+    color: var(--orange);
+  }
+
+  .problem-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .problem-card {
+    min-height: 170px;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    box-shadow: var(--shadow-rest);
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+
+  .problem-card:hover {
+    transform: translateY(-4px);
+    border-color: #cbd4f6;
+    box-shadow: var(--shadow-hover);
+  }
+
+  .problem-card .number {
+    display: block;
+    margin-bottom: 26px;
+    color: var(--blue);
+    font-family: var(--font-display);
+    font-weight: 700;
+  }
+
+  .problem-card strong {
+    display: block;
+    margin-bottom: 7px;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+  }
+
+  .problem-card p {
+    font-size: 0.89rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 760px) {
+    .problem-grid {
+      grid-template-columns: 1fr;
+      gap: 22px;
+      margin-top: 30px;
+    }
+
+    .problem-note {
+      margin-top: 0;
+      font-size: 1.02rem;
+    }
+
+    .problem-list {
+      gap: 10px;
+    }
+
+    .problem-card {
+      min-height: 140px;
+      padding: 16px;
+    }
+
+    .problem-card .number {
+      margin-bottom: 18px;
+    }
+
+    .problem-card strong {
+      font-size: 1rem;
+    }
+
+    .problem-card p {
+      font-size: 0.8rem;
+    }
+  }
+</style>

@@ -1,0 +1,391 @@
+---
+import telaDashboard from '../assets/tela-dashboard.svg';
+import telaOrdemServico from '../assets/tela-ordem-servico.svg';
+import telaCaixaMobile from '../assets/tela-caixa-mobile.svg';
+
+const slides = [
+  {
+    id: 'dashboard',
+    image: telaDashboard,
+    width: 1440,
+    height: 900,
+    alt: 'Dashboard com indicadores da oficina',
+    title: 'Dashboard',
+    caption: 'resumo da operação',
+    tabLabel: 'Dashboard',
+    narrow: false,
+  },
+  {
+    id: 'ordem-servico',
+    image: telaOrdemServico,
+    width: 1200,
+    height: 820,
+    alt: 'Tela de ordem de serviço com checklist e resumo financeiro',
+    title: 'Ordem de serviço',
+    caption: 'do diagnóstico ao recebimento',
+    tabLabel: 'Ordem de serviço',
+    narrow: false,
+  },
+  {
+    id: 'mobile',
+    image: telaCaixaMobile,
+    width: 430,
+    height: 860,
+    alt: 'Tela mobile do caixa com lançamentos fictícios',
+    title: 'Mobile',
+    caption: 'caixa na mão',
+    tabLabel: 'Tela mobile',
+    narrow: true,
+  },
+];
+---
+
+<section class="section product-section" id="produto">
+  <div class="container product-layout">
+    <div class="product-copy reveal">
+      <p class="eyebrow">Produto em movimento</p>
+      <h2>Uma tela para ver o que importa agora.</h2>
+      <p class="lede">
+        Telas claras, dados objetivos e ações no lugar certo. A experiência foi desenhada para
+        funcionar no computador, no celular e na correria real do balcão.
+      </p>
+
+      <ul class="feature-list">
+        <li>
+          <span class="check" aria-hidden="true">✓</span>
+          <span><strong>Visão de gestão:</strong> indicadores para decidir sem planilha.</span>
+        </li>
+        <li>
+          <span class="check" aria-hidden="true">✓</span>
+          <span><strong>Visão de operação:</strong> o próximo passo sempre evidente.</span>
+        </li>
+        <li>
+          <span class="check" aria-hidden="true">✓</span>
+          <span><strong>Visão do cliente:</strong> transparência sem abrir o sistema inteiro.</span>
+        </li>
+      </ul>
+
+      <a class="btn btn-primary" href="#recursos">
+        Conhecer recursos <span aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="carousel-wrap reveal reveal-delay-1" data-carousel>
+      <div class="carousel-stage">
+        {
+          slides.map((slide, index) => (
+            <div
+              class="slide"
+              id={`painel-${slide.id}`}
+              role="tabpanel"
+              aria-labelledby={`aba-${slide.id}`}
+              hidden={index !== 0}
+            >
+              <div class:list={['screen-frame', slide.narrow && 'is-narrow']}>
+                <img
+                  src={slide.image.src}
+                  width={slide.width}
+                  height={slide.height}
+                  alt={slide.alt}
+                  loading={index === 0 ? 'eager' : 'lazy'}
+                />
+              </div>
+              <p class="slide-caption">
+                <span>
+                  <strong>{slide.title}</strong> · {slide.caption}
+                </span>
+                <span aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+              </p>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="carousel-controls">
+        <button class="carousel-arrow" type="button" data-carousel-prev aria-label="Tela anterior">
+          <span aria-hidden="true">←</span>
+        </button>
+        <button class="carousel-arrow" type="button" data-carousel-next aria-label="Próxima tela">
+          <span aria-hidden="true">→</span>
+        </button>
+
+        <div class="carousel-dots" role="tablist" aria-label="Selecionar tela">
+          {
+            slides.map((slide, index) => (
+              <button
+                class:list={['carousel-dot', index === 0 && 'is-active']}
+                type="button"
+                role="tab"
+                id={`aba-${slide.id}`}
+                aria-controls={`painel-${slide.id}`}
+                aria-selected={index === 0 ? 'true' : 'false'}
+                tabindex={index === 0 ? 0 : -1}
+              >
+                <span class="sr-only">{slide.tabLabel}</span>
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product-section {
+    border-block: 1px solid #edf0f6;
+    background: var(--paper-soft);
+  }
+
+  .product-layout {
+    display: grid;
+    grid-template-columns: 0.74fr 1.26fr;
+    align-items: start;
+    gap: 42px;
+  }
+
+  .product-copy h2 {
+    margin-bottom: 20px;
+  }
+
+  .product-copy .lede {
+    margin-bottom: 28px;
+  }
+
+  .feature-list {
+    display: grid;
+    gap: 13px;
+    margin: 0 0 30px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .feature-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: var(--ink-2);
+    font-size: 0.92rem;
+  }
+
+  .carousel-wrap {
+    position: relative;
+    min-width: 0;
+  }
+
+  .carousel-stage {
+    position: relative;
+    overflow: hidden;
+    padding: 16px 12px 25px;
+  }
+
+  .slide {
+    animation: slide-in 0.45s var(--ease);
+  }
+
+  .slide[hidden] {
+    display: none;
+  }
+
+  @keyframes slide-in {
+    from {
+      opacity: 0;
+      transform: translateX(15px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .screen-frame {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .screen-frame.is-narrow {
+    max-width: 320px;
+    margin-inline: auto;
+  }
+
+  .screen-frame img {
+    width: 100%;
+    height: auto;
+  }
+
+  .slide-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .slide-caption strong {
+    color: var(--ink);
+  }
+
+  .carousel-controls {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-top: 4px;
+  }
+
+  .carousel-arrow {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--white);
+    font-size: 1.1rem;
+    transition:
+      transform 0.2s,
+      background 0.2s,
+      color 0.2s;
+  }
+
+  .carousel-arrow:hover {
+    transform: translateY(-2px);
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .carousel-dots {
+    display: flex;
+    gap: 6px;
+    margin-left: 4px;
+  }
+
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
+    padding: 0;
+    border-radius: 50%;
+    background: #cbd2e1;
+    transition:
+      width 0.25s var(--ease),
+      background 0.25s;
+  }
+
+  .carousel-dot.is-active {
+    width: 22px;
+    border-radius: 8px;
+    background: var(--blue);
+  }
+
+  @media (max-width: 760px) {
+    .product-layout {
+      grid-template-columns: 1fr;
+      gap: 26px;
+    }
+
+    .product-copy .lede {
+      margin-bottom: 21px;
+    }
+
+    .carousel-stage {
+      padding: 7px 0 18px;
+    }
+
+    .screen-frame {
+      border-radius: 13px;
+    }
+
+    .carousel-controls {
+      margin-top: 0;
+    }
+  }
+</style>
+
+<script>
+  const wrap = document.querySelector<HTMLElement>('[data-carousel]');
+
+  if (wrap) {
+    const panels = [...wrap.querySelectorAll<HTMLElement>('[role="tabpanel"]')];
+    const tabs = [...wrap.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const AUTOPLAY_MS = 6500;
+
+    let current = 0;
+    let timer: number | undefined;
+
+    const show = (index: number, moveFocus = false) => {
+      current = (index + panels.length) % panels.length;
+
+      panels.forEach((panel, i) => {
+        panel.toggleAttribute('hidden', i !== current);
+      });
+
+      tabs.forEach((tab, i) => {
+        const active = i === current;
+        tab.classList.toggle('is-active', active);
+        tab.setAttribute('aria-selected', String(active));
+        // Roving tabindex: apenas a aba ativa entra na ordem de tabulação.
+        tab.tabIndex = active ? 0 : -1;
+        if (active && moveFocus) tab.focus();
+      });
+    };
+
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = undefined;
+    };
+
+    // O preview girava o carrossel mesmo para quem pede menos animação.
+    const start = () => {
+      stop();
+      if (reduceMotion.matches || document.hidden) return;
+      timer = window.setInterval(() => show(current + 1), AUTOPLAY_MS);
+    };
+
+    wrap.querySelector('[data-carousel-prev]')?.addEventListener('click', () => {
+      stop();
+      show(current - 1);
+      start();
+    });
+
+    wrap.querySelector('[data-carousel-next]')?.addEventListener('click', () => {
+      stop();
+      show(current + 1);
+      start();
+    });
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => {
+        stop();
+        show(index);
+        start();
+      });
+
+      tab.addEventListener('keydown', (event) => {
+        const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+        if (!step) return;
+        event.preventDefault();
+        stop();
+        show(current + step, true);
+        start();
+      });
+    });
+
+    wrap.addEventListener('mouseenter', stop);
+    wrap.addEventListener('mouseleave', start);
+    wrap.addEventListener('focusin', stop);
+    wrap.addEventListener('focusout', (event) => {
+      if (!wrap.contains(event.relatedTarget as Node | null)) start();
+    });
+
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
+    reduceMotion.addEventListener('change', start);
+
+    start();
+  }
+</script>

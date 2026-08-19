@@ -1,0 +1,135 @@
+---
+const items = [
+  { icon: 'OS', title: 'Ordens de serviço', detail: 'Do diagnóstico à entrega' },
+  { icon: 'R$', title: 'Caixa conectado', detail: 'Receba e confira' },
+  { icon: '+', title: 'Estoque vivo', detail: 'Peça baixa sozinha' },
+  { icon: '↗', title: 'Cliente informado', detail: 'Acompanhamento por link' },
+];
+---
+
+<section class="trust-strip" aria-label="Visão geral dos recursos">
+  <div class="container trust-row">
+    {
+      items.map((item) => (
+        <div class="trust-item">
+          <span class="trust-icon" aria-hidden="true">
+            {item.icon}
+          </span>
+          <div>
+            <strong>{item.title}</strong>
+            <span>{item.detail}</span>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .trust-strip {
+    border-block: 1px solid var(--line);
+    background: var(--white);
+  }
+
+  .trust-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 23px 22px;
+    border-right: 1px solid var(--line);
+  }
+
+  .trust-item:first-child {
+    padding-left: 0;
+  }
+
+  .trust-item:last-child {
+    padding-right: 0;
+    border-right: 0;
+  }
+
+  .trust-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--blue-pale);
+    color: var(--blue);
+    font-weight: 700;
+  }
+
+  .trust-item:nth-child(2) .trust-icon {
+    background: var(--teal-pale);
+    color: var(--teal);
+  }
+
+  .trust-item:nth-child(3) .trust-icon {
+    background: var(--orange-pale);
+    color: var(--orange);
+  }
+
+  .trust-item:nth-child(4) .trust-icon {
+    background: #f0eaff;
+    color: #7652d4;
+  }
+
+  .trust-item strong {
+    display: block;
+    font-size: 1.02rem;
+  }
+
+  .trust-item span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  /*
+   * Em 2 colunas o padding é simétrico: a borda separa apenas a coluna da
+   * esquerda. O preview empilhava três regras concorrentes e cada célula
+   * acabava com um espaçamento diferente.
+   */
+  @media (max-width: 760px) {
+    .trust-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .trust-item,
+    .trust-item:first-child,
+    .trust-item:last-child {
+      padding: 15px 12px;
+      border-right: 1px solid var(--line);
+    }
+
+    .trust-item:nth-child(odd) {
+      padding-left: 0;
+    }
+
+    .trust-item:nth-child(even) {
+      padding-right: 0;
+      border-right: 0;
+    }
+
+    .trust-item strong {
+      font-size: 0.92rem;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .trust-item {
+      gap: 8px;
+    }
+
+    .trust-icon {
+      width: 31px;
+      height: 31px;
+      font-size: 0.85rem;
+    }
+  }
+</style>

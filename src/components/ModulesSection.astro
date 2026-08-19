@@ -1,0 +1,243 @@
+---
+const modules = [
+  {
+    icon: '▣',
+    title: 'Ordens de serviço',
+    text: 'Diagnóstico, fotos, peças, mão de obra, status e histórico em uma ficha que não se perde.',
+  },
+  {
+    icon: 'R$',
+    title: 'Caixa & fiado',
+    text: 'Receba em Pix, dinheiro ou cartão e saiba quem pagou, quem ficou devendo e por quê.',
+  },
+  {
+    icon: '+',
+    title: 'Estoque conectado',
+    text: 'A peça vinculada à OS dá baixa, o mínimo gera alerta e cada movimento deixa rastro.',
+  },
+  {
+    icon: '↗',
+    title: 'Clientes & veículos',
+    text: 'Histórico por veículo, cadastro organizado e contexto para atender melhor na próxima visita.',
+  },
+  {
+    icon: '▤',
+    title: 'Relatórios claros',
+    text: 'Faturamento, serviços, equipe, estoque e clientes em relatórios que ajudam a agir.',
+  },
+  {
+    icon: '◌',
+    title: 'Equipe & permissões',
+    text: 'O mecânico acessa o que precisa e a gestão mantém controle de cada alteração.',
+  },
+];
+
+const total = String(modules.length).padStart(2, '0');
+---
+
+<section class="section section-white" id="recursos">
+  <div class="container">
+    <div class="stacked-head">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Recursos que trabalham juntos</p>
+        <h2>Ligue o que a sua operação realmente usa.</h2>
+      </div>
+      <p class="lede reveal">
+        Cada módulo resolve uma parte do dia, mas o valor aparece quando eles compartilham a mesma
+        informação.
+      </p>
+    </div>
+
+    <div class="module-track" data-module-track>
+      {
+        modules.map((module, index) => (
+          <article
+            class:list={['module-card', 'reveal', index % 3 > 0 && `reveal-delay-${index % 3}`]}
+          >
+            <div class="module-top">
+              <span class="module-icon" aria-hidden="true">
+                {module.icon}
+              </span>
+              <span class="module-index">
+                {String(index + 1).padStart(2, '0')} / {total}
+              </span>
+            </div>
+            <h3>{module.title}</h3>
+            <p>{module.text}</p>
+            {/* O rótulo acessível evita seis links "Ver no sistema" indistinguíveis. */}
+            <a href="#acesso" aria-label={`Ver ${module.title} no sistema`}>
+              Ver no sistema <span aria-hidden="true">→</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="modules-mobile-controls">
+      <p>Deslize para ver os módulos</p>
+      <div class="module-scroll-buttons">
+        <button type="button" data-module-prev aria-label="Módulo anterior">
+          <span aria-hidden="true">←</span>
+        </button>
+        <button type="button" data-module-next aria-label="Próximo módulo">
+          <span aria-hidden="true">→</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .module-track {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin-top: 26px;
+  }
+
+  .module-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 280px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--white);
+    box-shadow: var(--shadow-rest);
+    transition:
+      transform 0.25s var(--ease),
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+
+  .module-card:hover {
+    transform: translateY(-5px);
+    border-color: #c9d2f6;
+    box-shadow: var(--shadow-hover);
+  }
+
+  .module-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+
+  .module-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+    background: var(--blue-pale);
+    color: var(--blue);
+    font-size: 1.15rem;
+  }
+
+  .module-card:nth-child(3n + 2) .module-icon {
+    background: var(--teal-pale);
+    color: var(--teal);
+  }
+
+  .module-card:nth-child(3n) .module-icon {
+    background: var(--orange-pale);
+    color: var(--orange);
+  }
+
+  .module-index {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+  }
+
+  .module-card h3 {
+    margin-bottom: 10px;
+  }
+
+  .module-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .module-card a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: auto;
+    padding-top: 21px;
+    color: var(--blue);
+    font-size: 0.86rem;
+    font-weight: 700;
+  }
+
+  .module-card a:hover {
+    text-decoration: underline;
+  }
+
+  .modules-mobile-controls {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .module-track {
+      display: flex;
+      grid-template-columns: none;
+      overflow-x: auto;
+      gap: 10px;
+      margin: 24px -16px 0;
+      padding: 0 16px 12px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+    }
+
+    .module-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .module-card {
+      flex: 0 0 min(83vw, 320px);
+      scroll-snap-align: start;
+    }
+
+    .modules-mobile-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .modules-mobile-controls p {
+      font-size: 0.76rem;
+    }
+
+    .module-scroll-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .module-scroll-buttons button {
+      display: grid;
+      place-items: center;
+      width: 37px;
+      height: 37px;
+      border: 1px solid var(--line-strong);
+      border-radius: 9px;
+      background: var(--white);
+      color: var(--blue);
+    }
+  }
+</style>
+
+<script>
+  const track = document.querySelector<HTMLElement>('[data-module-track]');
+
+  if (track) {
+    const scrollBy = (direction: number) => {
+      track.scrollBy({ left: direction * track.clientWidth * 0.82, behavior: 'smooth' });
+    };
+
+    document.querySelector('[data-module-prev]')?.addEventListener('click', () => scrollBy(-1));
+    document.querySelector('[data-module-next]')?.addEventListener('click', () => scrollBy(1));
+  }
+</script>

@@ -1,0 +1,170 @@
+---
+const points = [
+  'Continue registrando serviços e movimentações.',
+  'Sincronização automática quando a conexão retorna.',
+  'Histórico protegido e visível para a equipe.',
+];
+---
+
+<section class="section section-dark" id="offline">
+  <div class="container offline-grid">
+    <div class="offline-copy reveal">
+      <p class="eyebrow eyebrow-light">Resiliência de verdade</p>
+      <h2>A internet caiu? A oficina continua.</h2>
+      <p class="lede">
+        No computador e no celular, a operação mantém o essencial disponível e sincroniza quando a
+        conexão volta. Sem duplicar lançamento, sem recomeçar o trabalho.
+      </p>
+
+      <ul class="offline-points">
+        {
+          points.map((point) => (
+            <li>
+              <span class="check" aria-hidden="true">
+                ✓
+              </span>
+              {point}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="offline-card reveal reveal-delay-1">
+      <div class="offline-stat large">
+        <strong>0 retrabalho</strong>
+        <p>O que foi registrado uma vez continua fazendo parte do fluxo.</p>
+      </div>
+      <div class="offline-stat">
+        <strong>Web + mobile</strong>
+        <p>Escolha a tela que combina com o momento.</p>
+      </div>
+      <div class="offline-stat">
+        <strong>Dados fictícios</strong>
+        <p>Esta prévia usa exemplos para sua equipe avaliar a experiência.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-dark {
+    background: var(--ink);
+    color: var(--white);
+  }
+
+  .section-dark h2 {
+    color: var(--white);
+  }
+
+  .section-dark p {
+    color: #e4e8f5;
+  }
+
+  .eyebrow-light {
+    color: #dfe5ff;
+  }
+
+  .offline-grid {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    align-items: center;
+    gap: 72px;
+  }
+
+  .offline-copy h2 {
+    max-width: 600px;
+    margin-bottom: 20px;
+  }
+
+  .offline-points {
+    display: grid;
+    gap: 13px;
+    margin-top: 28px;
+  }
+
+  .offline-points li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #d7ddec;
+    font-size: 0.92rem;
+  }
+
+  .offline-points .check {
+    background: #3650bd;
+    color: var(--white);
+  }
+
+  .offline-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .offline-stat {
+    padding: 26px;
+    border: 1px solid rgb(255 255 255 / 17%);
+    border-radius: 16px;
+    background: #27304c;
+  }
+
+  .offline-stat strong {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--white);
+    font: 700 1.35rem var(--font-display);
+  }
+
+  .offline-stat p {
+    font-size: 0.86rem;
+  }
+
+  .offline-stat.large {
+    grid-column: 1 / -1;
+    border-color: transparent;
+    background: var(--blue);
+  }
+
+  .offline-stat.large strong {
+    font-size: 2.35rem;
+  }
+
+  @media (max-width: 1000px) {
+    .offline-grid {
+      gap: 42px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .offline-grid {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .offline-points {
+      margin-top: 22px;
+    }
+
+    .offline-card {
+      gap: 10px;
+    }
+
+    .offline-stat {
+      padding: 20px;
+    }
+
+    .offline-stat strong {
+      font-size: 1.1rem;
+    }
+
+    .offline-stat.large strong {
+      font-size: 2rem;
+    }
+
+    .offline-stat p {
+      font-size: 0.78rem;
+    }
+  }
+</style>

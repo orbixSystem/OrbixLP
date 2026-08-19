@@ -1,0 +1,266 @@
+---
+const plans = [
+  {
+    name: 'Base',
+    pitch: 'Para organizar a rotina e começar a enxergar o negócio.',
+    monthly: 89,
+    yearly: 71,
+    features: ['Ordens de serviço', 'Clientes e veículos', 'Caixa conectado', 'Até 2 usuários'],
+    cta: { label: 'Tenho interesse', style: 'btn-secondary' },
+    featured: false,
+    badge: null,
+  },
+  {
+    name: 'Operação',
+    pitch: 'Para oficinas que querem integrar equipe, estoque e gestão.',
+    monthly: 169,
+    yearly: 135,
+    features: [
+      'Todos os recursos Base',
+      'Estoque e alertas',
+      'Relatórios de gestão',
+      'Até 8 usuários',
+    ],
+    cta: { label: 'Quero conhecer', style: 'btn-primary' },
+    featured: true,
+    badge: 'Mais completo',
+  },
+];
+---
+
+<section class="section pricing-section" id="planos">
+  <div class="container">
+    <div class="stacked-head pricing-head">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Planos simples</p>
+        <h2>Comece com o essencial. Cresça com a operação.</h2>
+        <p class="lede">Escolha a estrutura que faz sentido para a sua oficina hoje.</p>
+      </div>
+
+      <div class="billing-toggle reveal" role="group" aria-label="Periodicidade de cobrança">
+        <button class="is-active" type="button" data-billing="monthly" aria-pressed="true">
+          Mensal
+        </button>
+        <button type="button" data-billing="yearly" aria-pressed="false">
+          Anual <span class="discount">−20%</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="pricing-grid">
+      {
+        plans.map((plan, index) => (
+          <article
+            class:list={['price-card', plan.featured && 'featured', 'reveal', index > 0 && 'reveal-delay-1']}
+          >
+            {plan.badge && <span class="price-badge">{plan.badge}</span>}
+            <h3>{plan.name}</h3>
+            <p>{plan.pitch}</p>
+
+            <p class="price">
+              <strong
+                data-price
+                data-price-monthly={plan.monthly}
+                data-price-yearly={plan.yearly}
+                aria-live="polite"
+              >
+                R$ {plan.monthly}
+              </strong>
+              <span>/ mês</span>
+            </p>
+
+            <ul class="price-list">
+              {plan.features.map((feature) => (
+                <li>
+                  <span class="check" aria-hidden="true">
+                    ✓
+                  </span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+
+            <a class:list={['btn', plan.cta.style]} href="#acesso">
+              {plan.cta.label}
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="price-note reveal">
+      Valores ilustrativos para a apresentação · condições comerciais confirmadas por e-mail.
+    </p>
+  </div>
+</section>
+
+<style>
+  .pricing-section {
+    background: var(--paper-soft);
+  }
+
+  .billing-toggle {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 18px;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--white);
+    width: max-content;
+  }
+
+  .billing-toggle button {
+    padding: 9px 12px;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .billing-toggle button.is-active {
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .discount {
+    color: var(--teal);
+  }
+
+  .billing-toggle button.is-active .discount {
+    color: #9df3d3;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .price-card {
+    position: relative;
+    padding: 31px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow-rest);
+  }
+
+  .price-card.featured {
+    padding: 30px;
+    border: 2px solid var(--blue);
+  }
+
+  .price-badge {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    padding: 6px 9px;
+    border-radius: 7px;
+    background: var(--teal-pale);
+    color: var(--teal);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .price-card h3 {
+    margin-bottom: 9px;
+  }
+
+  .price-card > p {
+    font-size: 0.88rem;
+  }
+
+  .price {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin: 25px 0 23px;
+    font-family: var(--font-display);
+  }
+
+  .price strong {
+    color: var(--ink);
+    font-size: 2.45rem;
+    letter-spacing: -0.06em;
+  }
+
+  .price span {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .price-list {
+    display: grid;
+    gap: 12px;
+    margin: 0 0 28px;
+    padding: 0;
+    list-style: none;
+  }
+
+  .price-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    color: var(--ink-2);
+    font-size: 0.88rem;
+  }
+
+  .price-note {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  @media (max-width: 760px) {
+    .billing-toggle {
+      margin-top: 16px;
+    }
+
+    .pricing-grid {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .price-card {
+      padding: 24px;
+    }
+
+    .price-card.featured {
+      padding: 23px;
+    }
+  }
+</style>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('[data-billing]')];
+  const prices = [...document.querySelectorAll<HTMLElement>('[data-price]')];
+
+  const formatter = new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+    minimumFractionDigits: 0,
+  });
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const mode = button.dataset.billing === 'yearly' ? 'yearly' : 'monthly';
+
+      buttons.forEach((item) => {
+        const active = item === button;
+        item.classList.toggle('is-active', active);
+        item.setAttribute('aria-pressed', String(active));
+      });
+
+      prices.forEach((price) => {
+        const value = Number(
+          mode === 'yearly' ? price.dataset.priceYearly : price.dataset.priceMonthly,
+        );
+        if (Number.isFinite(value)) price.textContent = formatter.format(value);
+      });
+    });
+  });
+</script>

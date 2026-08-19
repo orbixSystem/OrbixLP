@@ -1,0 +1,309 @@
+---
+import logo from '../assets/logo-orbixhub.svg';
+
+const links = [
+  { href: '#como-funciona', label: 'Como funciona' },
+  { href: '#recursos', label: 'Recursos' },
+  { href: '#planos', label: 'Planos' },
+  { href: '#duvidas', label: 'Dúvidas' },
+];
+---
+
+<header class="site-header" id="siteHeader">
+  <div class="container nav">
+    <a class="brand" href="#topo" aria-label="OrbixHub, início">
+      <img src={logo.src} width="30" height="30" alt="" />
+      <span>Orbix</span><span>Hub</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Navegação principal">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <div class="nav-actions">
+      <a class="nav-login" href="#acesso">Solicitar acesso</a>
+      <a class="btn btn-primary btn-small" href="#acesso">Quero conhecer</a>
+      <button
+        class="menu-toggle"
+        id="menuToggle"
+        type="button"
+        aria-label="Abrir menu"
+        aria-expanded="false"
+        aria-controls="mobilePanel"
+      >
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel" inert>
+    <div class="mobile-panel-inner">
+      {links.map((link) => <a href={link.href}>{link.label}</a>)}
+      <a class="btn btn-primary" href="#acesso">Solicitar acesso</a>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid transparent;
+    background: rgb(255 255 255 / 96%);
+    transition:
+      background 0.25s,
+      box-shadow 0.25s,
+      border-color 0.25s;
+  }
+
+  .site-header.is-scrolled {
+    border-color: var(--line);
+    box-shadow: var(--shadow-rest);
+  }
+
+  .nav {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    font-family: var(--font-display);
+    font-size: 1.22rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+
+  .brand img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .brand span:last-child {
+    color: var(--blue);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .nav-links a {
+    position: relative;
+    padding: 8px 0;
+    transition: color 0.2s;
+  }
+
+  .nav-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 100%;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--teal);
+    transition: right 0.25s var(--ease);
+  }
+
+  .nav-links a:hover {
+    color: var(--ink);
+  }
+
+  .nav-links a:hover::after {
+    right: 0;
+  }
+
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .nav-login {
+    color: var(--ink);
+    font-size: 0.92rem;
+    font-weight: 700;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    place-items: center;
+  }
+
+  .menu-toggle span,
+  .menu-toggle span::before,
+  .menu-toggle span::after {
+    display: block;
+    width: 19px;
+    height: 2px;
+    border-radius: 4px;
+    background: var(--ink);
+    transition:
+      transform 0.25s,
+      opacity 0.25s;
+  }
+
+  .menu-toggle span {
+    position: relative;
+  }
+
+  .menu-toggle span::before,
+  .menu-toggle span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  .menu-toggle span::before {
+    top: -6px;
+  }
+
+  .menu-toggle span::after {
+    top: 6px;
+  }
+
+  .menu-toggle.is-open span {
+    background: transparent;
+  }
+
+  .menu-toggle.is-open span::before {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-toggle.is-open span::after {
+    transform: translateY(-6px) rotate(-45deg);
+  }
+
+  .mobile-panel {
+    display: none;
+  }
+
+  @media (max-width: 1000px) {
+    .nav-links {
+      gap: 18px;
+    }
+
+    .nav-login {
+      display: none;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .nav {
+      height: 68px;
+    }
+
+    .nav-links,
+    .nav-actions > .btn {
+      display: none;
+    }
+
+    .nav-actions {
+      gap: 9px;
+    }
+
+    .menu-toggle {
+      display: grid;
+    }
+
+    .mobile-panel {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 68px;
+      display: grid;
+      grid-template-rows: 0fr;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background: var(--white);
+      box-shadow: var(--shadow-hover);
+      transition: grid-template-rows 0.35s var(--ease);
+    }
+
+    .mobile-panel.is-open {
+      grid-template-rows: 1fr;
+    }
+
+    .mobile-panel-inner {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 0 16px;
+      visibility: hidden;
+    }
+
+    .mobile-panel.is-open .mobile-panel-inner {
+      visibility: visible;
+    }
+
+    .mobile-panel a {
+      padding: 15px 4px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 700;
+    }
+
+    .mobile-panel .btn {
+      margin: 16px 0;
+    }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('#siteHeader');
+  const toggle = document.querySelector<HTMLButtonElement>('#menuToggle');
+  const panel = document.querySelector<HTMLElement>('#mobilePanel');
+
+  if (header && toggle && panel) {
+    const setMenu = (open: boolean) => {
+      toggle.classList.toggle('is-open', open);
+      panel.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      // `inert` mantém os links fora da ordem de foco e do leitor de tela
+      // enquanto o painel está recolhido.
+      panel.toggleAttribute('inert', !open);
+      document.body.classList.toggle('is-locked', open);
+    };
+
+    toggle.addEventListener('click', () => setMenu(!panel.classList.contains('is-open')));
+
+    panel.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setMenu(false));
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && panel.classList.contains('is-open')) {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+
+    // Acima de 760px o painel deixa de existir: garante um estado consistente
+    // caso a janela seja redimensionada com o menu aberto.
+    const desktop = window.matchMedia('(min-width: 761px)');
+    desktop.addEventListener('change', (event) => {
+      if (event.matches) setMenu(false);
+    });
+
+    window.addEventListener(
+      'scroll',
+      () => header.classList.toggle('is-scrolled', window.scrollY > 12),
+      { passive: true },
+    );
+  }
+</script>

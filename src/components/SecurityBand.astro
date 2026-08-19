@@ -1,0 +1,96 @@
+---
+const items = [
+  {
+    title: 'Permissões por função',
+    text: 'Cada perfil vê o que precisa para fazer seu trabalho.',
+  },
+  {
+    title: 'Histórico de alterações',
+    text: 'O que mudou, quando mudou e quem fez ficam registrados.',
+  },
+  {
+    title: 'Dados separados',
+    text: 'O workspace da oficina mantém sua operação organizada.',
+  },
+  {
+    title: 'Exportação simples',
+    text: 'Relatórios em formatos úteis para sua gestão.',
+  },
+];
+---
+
+<section class="section-sm section-white" aria-labelledby="titulo-seguranca">
+  <div class="container security-band">
+    <div class="reveal">
+      <p class="eyebrow">Segurança no dia a dia</p>
+      <h2 id="titulo-seguranca">Controle para trabalhar com tranquilidade.</h2>
+    </div>
+
+    <div class="security-grid reveal reveal-delay-1">
+      {
+        items.map((item) => (
+          <div class="security-item">
+            <strong>{item.title}</strong>
+            <p>{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .security-band {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    align-items: center;
+    gap: 44px;
+  }
+
+  .security-band h2 {
+    max-width: 410px;
+  }
+
+  .security-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .security-item {
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--white);
+  }
+
+  .security-item strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.94rem;
+  }
+
+  .security-item p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+
+
+  @media (max-width: 760px) {
+    .security-band {
+      grid-template-columns: 1fr;
+    }
+
+    .security-grid {
+      gap: 9px;
+    }
+
+    .security-item {
+      padding: 16px;
+    }
+
+    .security-item strong {
+      font-size: 0.84rem;
+    }
+  }
+</style>

@@ -1,0 +1,355 @@
+---
+import { Image } from 'astro:assets';
+
+import heroPhoto from '../assets/hero-oficina.webp';
+import telaDashboard from '../assets/tela-dashboard.svg';
+import telaCaixaMobile from '../assets/tela-caixa-mobile.svg';
+---
+
+<section class="hero" id="topo">
+  <div class="container hero-grid">
+    <div class="hero-copy reveal">
+      <p class="eyebrow">Gestão para oficinas que querem avançar</p>
+      <h1>Sua oficina trabalha melhor quando <em>tudo conversa.</em></h1>
+      <p class="lede">
+        OS, clientes, peças, caixa e acompanhamento em um fluxo só. O OrbixHub tira a operação da
+        cabeça e coloca clareza no dia a dia.
+      </p>
+
+      <div class="button-row hero-actions">
+        <a class="btn btn-primary" href="#acesso">
+          Quero conhecer o OrbixHub <span aria-hidden="true">→</span>
+        </a>
+        <a class="btn btn-secondary" href="#produto">Ver o sistema</a>
+      </div>
+
+      <p class="hero-note">
+        <span class="hero-note-dot" aria-hidden="true"></span>
+        Dados de demonstração · sem cartão · resposta por e-mail
+      </p>
+
+      <div class="hero-proof">
+        <div class="avatar-stack" aria-hidden="true">
+          <span>AR</span><span>CM</span><span>JS</span>
+        </div>
+        <p>
+          <strong>Uma visão só para cada decisão.</strong><br />
+          Do balcão à gestão, sem trocar de tela a toda hora.
+        </p>
+      </div>
+    </div>
+
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="hero-photo">
+        <Image
+          src={heroPhoto}
+          alt="Oficina mecânica clara e organizada com um mecânico ao lado de um carro elevado"
+          widths={[480, 768, 1100, 1536]}
+          sizes="(max-width: 760px) 93vw, (max-width: 1000px) 50vw, 560px"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+
+      <p class="floating-label">
+        <span class="status-dot" aria-hidden="true"></span>Operação sincronizada
+      </p>
+
+      <div class="ui-float desktop">
+        <img
+          src={telaDashboard.src}
+          width="1440"
+          height="900"
+          alt="Dashboard claro do OrbixHub com faturamento, ordens em andamento e indicadores da oficina"
+        />
+      </div>
+
+      <div class="ui-float mobile">
+        <img
+          src={telaCaixaMobile.src}
+          width="430"
+          height="860"
+          alt="Tela mobile clara do caixa do OrbixHub com entradas e saídas"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 0;
+    padding: 52px 0 58px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  .hero::before {
+    content: "";
+    position: absolute;
+    top: 80px;
+    right: -120px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: #dfe5ff;
+    opacity: 0.75;
+    filter: blur(2px);
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    left: -170px;
+    bottom: -190px;
+    width: 420px;
+    height: 420px;
+    border: 1px solid #dce4f5;
+    border-radius: 50%;
+  }
+
+  .hero-grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: center;
+    gap: 42px;
+  }
+
+  .hero-copy h1 {
+    margin-bottom: 18px;
+  }
+
+  .hero-copy h1 em {
+    font-style: normal;
+    color: var(--blue);
+  }
+
+  .hero-copy .lede {
+    max-width: 560px;
+  }
+
+  .hero-actions {
+    margin-top: 31px;
+  }
+
+  .hero-note {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 17px;
+    color: var(--muted);
+    font-size: 0.83rem;
+  }
+
+  .hero-note-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+
+  .hero-proof {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 510px;
+    margin-top: 33px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .hero-proof p {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .hero-proof strong {
+    color: var(--ink);
+  }
+
+  .avatar-stack {
+    display: flex;
+  }
+
+  .avatar-stack span {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    margin-right: -7px;
+    border: 2px solid var(--paper);
+    border-radius: 50%;
+    background: var(--blue-pale);
+    color: var(--blue);
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  .avatar-stack span:nth-child(2) {
+    background: var(--teal-pale);
+    color: var(--teal);
+  }
+
+  .avatar-stack span:nth-child(3) {
+    background: var(--orange-pale);
+    color: var(--orange);
+  }
+
+  .hero-visual {
+    position: relative;
+    min-height: 470px;
+  }
+
+  .hero-photo {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 86%;
+    height: 420px;
+    overflow: hidden;
+    border-radius: 24px;
+    background: #dfe6ee;
+    box-shadow: var(--shadow-hover);
+  }
+
+  .hero-photo :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(25 34 65 / 8%);
+  }
+
+  .ui-float {
+    position: absolute;
+    z-index: 2;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--white);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .ui-float img {
+    width: 100%;
+    height: auto;
+  }
+
+  .ui-float.desktop {
+    left: 0;
+    bottom: 18px;
+    width: 86%;
+    transform: rotate(-2.2deg);
+  }
+
+  .ui-float.mobile {
+    right: -5px;
+    bottom: 0;
+    width: 145px;
+    transform: rotate(4deg);
+  }
+
+  .floating-label {
+    position: absolute;
+    z-index: 3;
+    right: 5px;
+    top: 50px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 10px 13px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--white);
+    box-shadow: var(--shadow-rest);
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 4px var(--teal-pale);
+  }
+
+  @media (max-width: 1000px) {
+    .ui-float.desktop {
+      width: 92%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      padding: 34px 0 42px;
+    }
+
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .hero-copy h1 {
+      font-size: clamp(2.25rem, 9vw, 3rem);
+      line-height: 1.08;
+    }
+
+    .hero-copy .lede {
+      font-size: 0.98rem;
+    }
+
+    .hero-actions {
+      margin-top: 22px;
+    }
+
+    .hero-proof {
+      margin-top: 24px;
+    }
+
+    .hero-visual {
+      min-height: 320px;
+      margin: 0 -7px;
+    }
+
+    .hero-photo {
+      right: 0;
+      width: 93%;
+      height: 230px;
+      border-radius: 18px;
+    }
+
+    .ui-float.desktop {
+      left: 0;
+      bottom: 12px;
+      width: 92%;
+      transform: rotate(-1.5deg);
+    }
+
+    .ui-float.mobile {
+      right: -2px;
+      bottom: 0;
+      width: 104px;
+      transform: rotate(3deg);
+    }
+
+    .floating-label {
+      right: 0;
+      top: 12px;
+      padding: 8px 10px;
+      font-size: 0.78rem;
+    }
+  }
+
+</style>

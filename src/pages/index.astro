@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+import SiteHeader from '../components/SiteHeader.astro';
+import HeroSection from '../components/HeroSection.astro';
+import TrustStrip from '../components/TrustStrip.astro';
+import ProblemSection from '../components/ProblemSection.astro';
+import WorkflowSection from '../components/WorkflowSection.astro';
+import ProductSection from '../components/ProductSection.astro';
+import ModulesSection from '../components/ModulesSection.astro';
+import OfflineSection from '../components/OfflineSection.astro';
+import UseCasesSection from '../components/UseCasesSection.astro';
+import PricingSection from '../components/PricingSection.astro';
+import SecurityBand from '../components/SecurityBand.astro';
+import FaqSection from '../components/FaqSection.astro';
+import CtaSection from '../components/CtaSection.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import WhatsAppFloat from '../components/WhatsAppFloat.astro';
+import ImageLightbox from '../components/ImageLightbox.astro';
+---
+
+<BaseLayout>
+  <SiteHeader />
+
+  <main id="conteudo">
+    <HeroSection />
+    <TrustStrip />
+    <ProblemSection />
+    <WorkflowSection />
+    <ProductSection />
+    <ModulesSection />
+    <OfflineSection />
+    <UseCasesSection />
+    <PricingSection />
+    <SecurityBand />
+    <FaqSection />
+    <CtaSection />
+  </main>
+
+  <WhatsAppFloat />
+  <SiteFooter />
+  <ImageLightbox />
+</BaseLayout>
+
+<script>
+  // Entrada suave dos blocos ao rolar. Quem pede menos animação já recebe tudo
+  // visível pelo CSS, então nem observamos os elementos.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const blocks = [...document.querySelectorAll<HTMLElement>('.reveal')];
+
+  if (reduceMotion.matches) {
+    blocks.forEach((block) => block.classList.add('is-visible'));
+  } else {
+    const observer = new IntersectionObserver(
+      (entries, self) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          self.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12 },
+    );
+
+    blocks.forEach((block) => observer.observe(block));
+  }
+</script>

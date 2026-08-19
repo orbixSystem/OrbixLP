@@ -1,0 +1,182 @@
+---
+import { contact, accessRequest } from '../../site.config';
+---
+
+<section class="cta-section" id="acesso">
+  <div class="container cta-grid">
+    <div class="cta-copy reveal">
+      <p class="eyebrow eyebrow-light">Próximo passo</p>
+      <h2>Quer ver o OrbixHub com o contexto da sua oficina?</h2>
+      <p class="lede">
+        Deixe seu e-mail. A equipe envia a apresentação e combina o melhor caminho para você
+        conhecer o sistema.
+      </p>
+    </div>
+
+    <form
+      class="access-form reveal reveal-delay-1"
+      data-access-form
+      data-email={contact.email}
+      data-subject={accessRequest.subject}
+    >
+      <p class="form-callout">Vamos entrar em contato com você.</p>
+
+      <label for="email">Seu e-mail</label>
+      <div class="form-row">
+        <input
+          id="email"
+          name="email"
+          type="email"
+          autocomplete="email"
+          placeholder="voce@suaoficina.com.br"
+          required
+        />
+        <button class="btn btn-light" type="submit">Solicitar acesso</button>
+      </div>
+
+      <small>
+        Ao enviar, você autoriza o contato sobre o OrbixHub. Sem spam e sem compartilhamento dos
+        seus dados.
+      </small>
+
+      <p class="form-message" data-form-message role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .cta-section {
+    padding: 60px 0;
+    background: var(--blue);
+    color: var(--white);
+  }
+
+  .cta-grid {
+    display: grid;
+    grid-template-columns: 1fr 0.88fr;
+    align-items: center;
+    gap: 70px;
+  }
+
+  .eyebrow-light {
+    color: #dfe5ff;
+  }
+
+  .cta-copy h2 {
+    max-width: 650px;
+    margin-bottom: 18px;
+    color: var(--white);
+  }
+
+  .cta-copy p {
+    max-width: 600px;
+    color: #dbe0ff;
+  }
+
+  .access-form {
+    padding: 22px;
+    border: 1px solid rgb(255 255 255 / 23%);
+    border-radius: 16px;
+    background: #3348a9;
+  }
+
+  .access-form label {
+    display: block;
+    margin-bottom: 7px;
+    color: #eef1ff;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .form-callout {
+    margin-bottom: 13px;
+    color: #fff;
+    font-size: 0.98rem;
+    font-weight: 700;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 9px;
+  }
+
+  .access-form input {
+    min-width: 0;
+    flex: 1;
+    height: 50px;
+    padding: 0 14px;
+    border: 1px solid rgb(255 255 255 / 26%);
+    border-radius: 9px;
+    background: var(--white);
+    color: var(--ink);
+  }
+
+  .access-form input::placeholder {
+    color: #8d96aa;
+  }
+
+  .access-form small {
+    display: block;
+    margin-top: 11px;
+    color: #cdd4ff;
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  .form-message {
+    min-height: 20px;
+    margin-top: 10px;
+    color: #bff4dd;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+
+  @media (max-width: 760px) {
+    .cta-grid {
+      grid-template-columns: 1fr;
+      gap: 27px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    .access-form input {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-access-form]');
+
+  if (form) {
+    const input = form.querySelector<HTMLInputElement>('#email')!;
+    const message = form.querySelector<HTMLElement>('[data-form-message]')!;
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const email = input.value.trim();
+      if (!email || !input.checkValidity()) {
+        message.textContent = 'Confira o e-mail digitado para continuarmos.';
+        input.focus();
+        return;
+      }
+
+      message.textContent = 'Pedido preparado. Abrindo seu e-mail para concluir o contato…';
+
+      const to = form.dataset.email ?? '';
+      const subject = encodeURIComponent(form.dataset.subject ?? '');
+      const body = encodeURIComponent(
+        `Olá, equipe OrbixHub!\n\nMeu e-mail é ${email} e quero receber a apresentação do sistema.`,
+      );
+
+      window.setTimeout(() => {
+        window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+      }, 150);
+    });
+  }
+</script>
