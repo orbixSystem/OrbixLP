@@ -80,6 +80,14 @@ const questions = [
     margin-bottom: 18px;
   }
 
+  /*
+   * O preview deixava o botão colado no parágrafo. O resto da página respira
+   * 28px entre o texto de apoio e o CTA (21px no celular).
+   */
+  .faq-intro .btn {
+    margin-top: 28px;
+  }
+
   .faq-list {
     border-top: 1px solid var(--line);
   }
@@ -180,6 +188,10 @@ const questions = [
     .faq-layout {
       grid-template-columns: 1fr;
       gap: 28px;
+    }
+
+    .faq-intro .btn {
+      margin-top: 21px;
     }
 
     .faq-question {

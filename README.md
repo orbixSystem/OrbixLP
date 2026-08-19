@@ -159,6 +159,8 @@ e 390px, a altura de **todas** as seções bate exatamente, exceto onde havia de
 - **`+` e `×` do FAQ desalinhados.** Eram um caractere de texto, e a métrica da fonte o
   deixava fora do centro da bolinha — a rotação de 45° que vira `×` escancarava o
   problema. Agora as duas barras são desenhadas em CSS.
+- **Botão "Falar com a equipe" colado no parágrafo.** Era o único CTA da página com 0px
+  de respiro; o restante usa 28px (21px no celular).
 - **Setas do carrossel fugiam do cursor.** As três telas têm alturas bem diferentes
   (410px, 448px e 638px) e os botões, posicionados abaixo do palco, pulavam até 228px a
   cada troca: era preciso reposicionar o mouse para clicar de novo. Os controles passaram
