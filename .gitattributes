@@ -1,0 +1,10 @@
+# Normaliza para LF no repositório, independente do sistema de quem clona.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
