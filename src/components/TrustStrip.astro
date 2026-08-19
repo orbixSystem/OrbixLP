@@ -15,7 +15,7 @@ const items = [
           <span class="trust-icon" aria-hidden="true">
             {item.icon}
           </span>
-          <div>
+          <div class="trust-text">
             <strong>{item.title}</strong>
             <span>{item.detail}</span>
           </div>
@@ -56,12 +56,16 @@ const items = [
   .trust-icon {
     display: grid;
     place-items: center;
+    flex: 0 0 36px;
     width: 36px;
     height: 36px;
     border-radius: 10px;
     background: var(--blue-pale);
     color: var(--blue);
+    font-size: 1rem;
     font-weight: 700;
+    /* Sem entrelinha herdada, o glifo fica no centro óptico da caixa. */
+    line-height: 1;
   }
 
   .trust-item:nth-child(2) .trust-icon {
@@ -79,12 +83,17 @@ const items = [
     color: #7652d4;
   }
 
-  .trust-item strong {
+  .trust-text strong {
     display: block;
     font-size: 1.02rem;
   }
 
-  .trust-item span {
+  /*
+   * Precisa mirar só o texto de apoio: no preview a regra era `.trust-item span`
+   * e, por ter especificidade maior que `.trust-icon`, também derrubava o
+   * `display: grid` do ícone — o glifo encostava no canto da caixa colorida.
+   */
+  .trust-text span {
     display: block;
     color: var(--muted);
     font-size: 0.78rem;
@@ -116,7 +125,7 @@ const items = [
       border-right: 0;
     }
 
-    .trust-item strong {
+    .trust-text strong {
       font-size: 0.92rem;
     }
   }
@@ -127,9 +136,10 @@ const items = [
     }
 
     .trust-icon {
+      flex-basis: 31px;
       width: 31px;
       height: 31px;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
   }
 </style>

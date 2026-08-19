@@ -54,9 +54,7 @@ const questions = [
                 data-faq-trigger
               >
                 <span>{item.question}</span>
-                <span class="faq-toggle" aria-hidden="true">
-                  +
-                </span>
+                <span class="faq-toggle" aria-hidden="true" />
               </button>
             </h3>
             <div class="faq-answer" id={`resposta-${item.id}`} data-faq-panel inert>
@@ -115,19 +113,40 @@ const questions = [
     padding-right: 20px;
   }
 
+  /*
+   * O "+" é desenhado com duas barras em vez de um caractere de texto: a
+   * métrica da fonte deixava o glifo fora do centro da bolinha, e a rotação de
+   * 45° que o transforma em "×" escancarava o desalinhamento.
+   */
   .faq-toggle {
-    display: grid;
-    place-items: center;
+    position: relative;
     flex: 0 0 28px;
     width: 28px;
     height: 28px;
     border: 1px solid var(--line-strong);
     border-radius: 50%;
     color: var(--blue);
-    font-size: 1.15rem;
     transition:
       transform 0.25s,
-      background 0.25s;
+      background 0.25s,
+      border-color 0.25s;
+  }
+
+  .faq-toggle::before,
+  .faq-toggle::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 11px;
+    height: 2px;
+    border-radius: 1px;
+    background: currentcolor;
+    transform: translate(-50%, -50%);
+  }
+
+  .faq-toggle::after {
+    transform: translate(-50%, -50%) rotate(90deg);
   }
 
   .faq-item.is-open .faq-toggle {
