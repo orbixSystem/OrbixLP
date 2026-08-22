@@ -181,7 +181,68 @@ Se a intenção era manter o card com superfície, é um ajuste de uma linha em
 
 ## Formulário de acesso
 
-O formulário de "Solicitar acesso" abre o cliente de e-mail do visitante com assunto e
-corpo prontos (`mailto:`), como no preview — não há backend. Para receber os pedidos por
-POST, troque o `<script>` de `CtaSection.astro` por um envio a um serviço de formulários
-ou a um endpoint da API do OrbixHub.
+O formulário de "Solicitar acesso" envia por **`POST` para o [Web3Forms](https://web3forms.com)**,
+que encaminha o pedido para `contact.email` (`orbix@orbixsystem.com`). O site segue 100%
+estático — não há adapter SSR nem backend próprio.
+
+O único dado enviado é o e-mail do visitante. Não há campo de mensagem: a intenção da seção
+é apenas registrar quem quer ser contatado.
+
+### Configuração
+
+A chave de acesso não está no Git. Antes de rodar ou publicar:
+
+```bash
+cp .env.example .env
+# cole a chave em PUBLIC_WEB3FORMS_KEY
+```
+
+A chave sai de https://web3forms.com informando `orbix@orbixsystem.com` — gratuita, sem conta
+e sem cartão. No deploy, cadastre `PUBLIC_WEB3FORMS_KEY` nas variáveis de ambiente do host.
+
+O prefixo `PUBLIC_` é exigido pelo Astro para expor a variável ao navegador, e é seguro aqui:
+a chave do Web3Forms é pública por design. Ela autoriza **entregar** mensagens na caixa já
+cadastrada e nada mais — não lê envios anteriores nem permite trocar o destinatário.
+
+**Sem a chave**, o build imprime um aviso e o formulário responde ao visitante pedindo que
+escreva direto para o e-mail de contato, em vez de falhar em silêncio.
+
+### Por que não é mais `mailto:`
+
+O preview abria o cliente de e-mail do visitante (`window.location.href = 'mailto:…'`). Quem
+usa Gmail ou Outlook pelo navegador — a maior parte do público no desktop — normalmente não
+tem cliente configurado: o clique não fazia nada, ou o Windows abria um diálogo de "como
+deseja abrir isto?". Mesmo quando abria, o pedido só chegava se o visitante clicasse em
+"Enviar" na janela dele. A landing page nunca sabia que o lead existiu.
+
+Os links `mailto:` do rodapé e do botão "Falar com a equipe" da FAQ **continuam**: ali o
+visitante escolhe abrir o e-mail, e o endereço fica visível como texto se o clique não
+funcionar.
+
+### Detalhes da implementação
+
+Em `src/components/CtaSection.astro`:
+
+- **`action`/`method` nativos no `<form>`.** O `fetch` é interceptado no `submit`, mas se o
+  JavaScript falhar o navegador faz o POST sozinho e o visitante cai na página de confirmação
+  do Web3Forms. O pedido não se perde.
+- **Validação de e-mail mais rigorosa que a nativa.** O `type="email"` do HTML segue a spec
+  do WHATWG, que não exige ponto no domínio: `a@b`, `teste@teste` e `fulano@gmail` passam
+  por ela. Como o e-mail é o único dado coletado, endereço truncado é lead perdido sem
+  volta. `accessRequest.emailPattern` (em `site.config.ts`) exige domínio com ponto e TLD
+  de 2+ letras, e alimenta tanto o atributo `pattern` quanto o `RegExp` do script — uma
+  fonte só. O valor é normalizado (`trim` + `toLowerCase`) antes de validar e enviar.
+- **Balão nativo suprimido.** O `pattern` faz o navegador barrar o envio antes do evento
+  `submit`, com a mensagem genérica "Corresponda ao formato solicitado". Um listener de
+  `invalid` cancela esse balão e mostra a mesma mensagem do fluxo por script no
+  `[data-form-message]`, que o leitor de tela já anuncia. O erro some ao primeiro toque no
+  campo.
+- **Honeypot** (`botcheck`, escondido com `.access-form label.botcheck`). A especificidade
+  extra é obrigatória: `.access-form label` define `display: block` e venceria um
+  `.botcheck` sozinho, deixando a caixa visível para o visitante. Bot que preenche tudo marca a
+  caixa; o envio é descartado no cliente e também pelo Web3Forms.
+- **Estados de envio.** O botão vira "Enviando…" e desabilita, o campo fica `readonly`, e o
+  `[data-form-message]` recebe `data-state="pending|success|error"` — cada um com sua cor,
+  anunciado por `role="status"` / `aria-live="polite"`.
+- **Erro de rede é tratado**: se a API não responder, a mensagem oferece o e-mail direto como
+  saída, em vez de deixar o visitante sem resposta.

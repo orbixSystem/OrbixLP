@@ -1,5 +1,14 @@
 ---
-import { contact, accessRequest } from '../../site.config';
+import { accessRequest, web3forms } from '../../site.config';
+
+const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
+
+if (!accessKey) {
+  console.warn(
+    '[orbix-lp] PUBLIC_WEB3FORMS_KEY não definida: o formulário de acesso vai avisar o ' +
+      'visitante para escrever direto no e-mail. Copie .env.example para .env e preencha a chave.',
+  );
+}
 ---
 
 <section class="cta-section" id="acesso">
@@ -13,12 +22,22 @@ import { contact, accessRequest } from '../../site.config';
       </p>
     </div>
 
+    <!--
+      O envio real acontece no <script> abaixo, via fetch. O action/method nativos existem
+      para o caso de o JavaScript falhar: o navegador faz o POST sozinho e o visitante cai
+      na página de confirmação do Web3Forms. Em nenhum cenário o pedido depende de o
+      visitante ter um cliente de e-mail instalado.
+    -->
     <form
       class="access-form reveal reveal-delay-1"
+      action={web3forms.endpoint}
+      method="POST"
       data-access-form
-      data-email={contact.email}
-      data-subject={accessRequest.subject}
     >
+      <input type="hidden" name="access_key" value={accessKey} />
+      <input type="hidden" name="subject" value={accessRequest.subject} />
+      <input type="hidden" name="from_name" value={web3forms.fromName} />
+
       <p class="form-callout">Vamos entrar em contato com você.</p>
 
       <label for="email">Seu e-mail</label>
@@ -29,10 +48,22 @@ import { contact, accessRequest } from '../../site.config';
           type="email"
           autocomplete="email"
           placeholder="voce@suaoficina.com.br"
+          pattern={accessRequest.emailPattern}
+          title="Informe um e-mail completo, como voce@suaoficina.com.br"
           required
         />
-        <button class="btn btn-light" type="submit">Solicitar acesso</button>
+        <button class="btn btn-light" type="submit" data-submit>Solicitar acesso</button>
       </div>
+
+      <!--
+        Honeypot: invisível para gente (display:none também esconde de leitor de tela),
+        mas presente no DOM. Bot que preenche tudo marca a caixa e o envio é descartado
+        aqui e também do lado do Web3Forms.
+      -->
+      <label class="botcheck">
+        Não preencha este campo
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" />
+      </label>
 
       <small>
         Ao enviar, você autoriza o contato sobre o OrbixHub. Sem spam e sem compartilhamento dos
@@ -115,6 +146,26 @@ import { contact, accessRequest } from '../../site.config';
     color: #8d96aa;
   }
 
+  .access-form input:read-only {
+    color: #6b7280;
+  }
+
+  .access-form button[disabled] {
+    transform: none;
+    box-shadow: none;
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  /*
+   * Precisa vencer o `.access-form label { display: block }` acima — daí o `label.botcheck`
+   * em vez de só `.botcheck`. Um honeypot visível não engana bot nenhum e ainda confunde
+   * o visitante.
+   */
+  .access-form label.botcheck {
+    display: none;
+  }
+
   .access-form small {
     display: block;
     margin-top: 11px;
@@ -126,11 +177,19 @@ import { contact, accessRequest } from '../../site.config';
   .form-message {
     min-height: 20px;
     margin-top: 10px;
-    color: #bff4dd;
+    color: #dbe0ff;
     font-size: 0.8rem;
     font-weight: 700;
   }
 
+  .form-message[data-state='success'] {
+    color: #bff4dd;
+  }
+
+  /* Pêssego claro: 8,9:1 sobre o #3348a9 do cartão, legível sem depender da cor. */
+  .form-message[data-state='error'] {
+    color: #ffd7cf;
+  }
 
   @media (max-width: 760px) {
     .cta-grid {
@@ -150,33 +209,104 @@ import { contact, accessRequest } from '../../site.config';
 </style>
 
 <script>
+  import { accessRequest, contact, web3forms } from '../../site.config';
+
+  // Mesma regra do atributo `pattern`, ancorada. Uma fonte só evita o campo aceitar no
+  // navegador o que o script recusa depois (ou o contrario).
+  const emailRule = new RegExp(`^(?:${accessRequest.emailPattern})$`);
+
+  const EMAIL_VAZIO = 'Informe seu e-mail para continuarmos.';
+  const EMAIL_INCOMPLETO =
+    'Esse e-mail parece incompleto. Confira o domínio, como "@gmail.com".';
+
   const form = document.querySelector<HTMLFormElement>('[data-access-form]');
 
   if (form) {
     const input = form.querySelector<HTMLInputElement>('#email')!;
+    const button = form.querySelector<HTMLButtonElement>('[data-submit]')!;
+    const botcheck = form.querySelector<HTMLInputElement>('[name="botcheck"]')!;
+    const accessKey = form.querySelector<HTMLInputElement>('[name="access_key"]')!.value;
     const message = form.querySelector<HTMLElement>('[data-form-message]')!;
+    const buttonLabel = button.textContent ?? 'Solicitar acesso';
 
-    form.addEventListener('submit', (event) => {
+    const setMessage = (text: string, state: 'pending' | 'success' | 'error') => {
+      message.textContent = text;
+      message.dataset.state = state;
+    };
+
+    const setBusy = (busy: boolean) => {
+      button.disabled = busy;
+      input.readOnly = busy;
+      button.textContent = busy ? 'Enviando…' : buttonLabel;
+    };
+
+    const emailError = (value: string) =>
+      value ? EMAIL_INCOMPLETO : EMAIL_VAZIO;
+
+    /*
+     * O `pattern` do input faz o navegador barrar o envio ANTES do evento `submit`,
+     * exibindo o balão nativo ("Corresponda ao formato solicitado"), que não explica nada.
+     * Aqui o balão é suprimido e a mesma mensagem do fluxo por script aparece embaixo do
+     * campo, onde o leitor de tela ja escuta pelo aria-live.
+     */
+    input.addEventListener('invalid', (event) => {
+      event.preventDefault();
+      setMessage(emailError(input.value.trim()), 'error');
+      input.focus();
+    });
+
+    // Some com o erro assim que a pessoa começa a corrigir, em vez de deixar texto
+    // vermelho parado sob um campo que ja mudou.
+    input.addEventListener('input', () => {
+      if (message.dataset.state === 'error') setMessage('', 'pending');
+    });
+
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
-      const email = input.value.trim();
-      if (!email || !input.checkValidity()) {
-        message.textContent = 'Confira o e-mail digitado para continuarmos.';
+      if (botcheck.checked) return;
+
+      // Normaliza antes de validar e enviar: espaço colado no copiar-e-colar e maiúscula
+      // do teclado do celular não deveriam barrar ninguém.
+      const email = input.value.trim().toLowerCase();
+      input.value = email;
+
+      if (!email || !emailRule.test(email)) {
+        setMessage(emailError(email), 'error');
         input.focus();
         return;
       }
 
-      message.textContent = 'Pedido preparado. Abrindo seu e-mail para concluir o contato…';
+      if (!accessKey) {
+        setMessage(`Formulário indisponível. Escreva para ${contact.email}.`, 'error');
+        return;
+      }
 
-      const to = form.dataset.email ?? '';
-      const subject = encodeURIComponent(form.dataset.subject ?? '');
-      const body = encodeURIComponent(
-        `Olá, equipe OrbixHub!\n\nMeu e-mail é ${email} e quero receber a apresentação do sistema.`,
-      );
+      setBusy(true);
+      setMessage('Enviando seu pedido…', 'pending');
 
-      window.setTimeout(() => {
-        window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
-      }, 150);
+      try {
+        const response = await fetch(web3forms.endpoint, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+        });
+        const result = await response.json();
+
+        if (!response.ok || !result.success) {
+          throw new Error(result.message ?? 'Falha no envio.');
+        }
+
+        form.reset();
+        setMessage('Pedido enviado! A equipe entra em contato pelo seu e-mail.', 'success');
+      } catch {
+        setMessage(
+          `Não conseguimos enviar agora. Tente de novo em instantes ou escreva para ${contact.email}.`,
+          'error',
+        );
+      } finally {
+        setBusy(false);
+      }
     });
   }
 </script>
