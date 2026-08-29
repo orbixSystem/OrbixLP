@@ -1,0 +1,62 @@
+# Publica a landing page no GitHub Pages a cada push na main.
+#
+# O destino não está escrito aqui: `SITE_URL` e `BASE_PATH` são variáveis do
+# repositório (Settings > Secrets and variables > Actions > Variables). Enquanto o DNS
+# de orbixsystem.com nao apontar para o GitHub, elas seguram o site em
+# https://orbixsystem.github.io/OrbixLP. Apagar as duas devolve o site ao domínio
+# próprio definido em site.config.ts, sem alterar código.
+name: Deploy no GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Um deploy por vez, sem cancelar o que já está no ar.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Cria o site do Pages na primeira execução e já o deixa em modo "GitHub Actions".
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - name: Build de produção
+        run: npm run build
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
+          PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

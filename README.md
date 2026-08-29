@@ -110,12 +110,43 @@ orbix-lp/
 ## Deploy
 
 `npm run build` gera `dist/`, com HTML, CSS, JS e imagens estáticos — sem servidor Node
-em produção. Publique o conteúdo de `dist/` em qualquer hospedagem estática (Vercel,
-Netlify, Cloudflare Pages, S3 + CloudFront, Nginx).
+em produção. O conteúdo de `dist/` roda em qualquer hospedagem estática (Vercel, Netlify,
+Cloudflare Pages, S3 + CloudFront, Nginx).
 
-Antes de publicar em outro domínio, ajuste `site.url` em `site.config.ts` e a linha
-`Sitemap:` em `public/robots.txt` — eles definem o canonical, as URLs do Open Graph e o
-sitemap.
+### GitHub Pages (o que está no ar)
+
+`.github/workflows/deploy.yml` publica no GitHub Pages a cada push na `main`: instala,
+roda `astro build` e envia `dist/` como artefato. O Pages está em modo *GitHub Actions* —
+não há branch `gh-pages`.
+
+O endereço não está escrito no workflow. Ele sai de duas **variáveis do repositório**
+(Settings → Secrets and variables → Actions → Variables), que sobrescrevem o padrão de
+`astro.config.mjs`:
+
+| Variável    | Valor atual                    | Para que serve                              |
+| ----------- | ------------------------------ | ------------------------------------------- |
+| `SITE_URL`  | `https://orbixsystem.github.io` | canonical, Open Graph, JSON-LD e sitemap    |
+| `BASE_PATH` | `/OrbixLP`                     | prefixo dos assets (página de projeto)      |
+
+Elas existem porque o domínio próprio ainda não aponta para o GitHub. **Para migrar para
+`orbixsystem.com`:**
+
+1. No DNS do domínio, troque os quatro registros `A` do apex pelos IPs do GitHub Pages
+   (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`).
+   O subdomínio `hub` aponta para o servidor de produção do app e **não deve ser tocado**.
+2. Em Settings → Pages, informe `orbixsystem.com` em *Custom domain* e marque
+   *Enforce HTTPS* assim que o certificado sair.
+3. **Apague** as variáveis `SITE_URL` e `BASE_PATH` e rode o workflow de novo: sem elas,
+   valem os padrões (`site.url` de `site.config.ts` e `base: '/'`).
+
+A linha `Sitemap:` de `public/robots.txt` já aponta para `https://orbixsystem.com` — o
+destino final.
+
+### Variável de ambiente
+
+`PUBLIC_WEB3FORMS_KEY` precisa ser cadastrada como **secret** do repositório com esse
+mesmo nome. Sem ela a build não falha: imprime um aviso e o formulário passa a pedir que
+o visitante escreva direto para o e-mail de contato.
 
 ## SEO e acessibilidade
 

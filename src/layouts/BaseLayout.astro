@@ -11,8 +11,17 @@ interface Props {
 
 const { title = site.title, description = site.description } = Astro.props;
 
+// Caminhos absolutos precisam carregar o `base` do Astro: em GitHub Pages o site pode
+// ser servido a partir de um subdiretório, e `/favicon.svg` apontaria para fora dele.
+// Com `base: '/'` (domínio próprio) o resultado é idêntico ao caminho cru.
+const withBase = (path: string) =>
+  `${import.meta.env.BASE_URL.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+
+/** Home do site já com o `base` aplicado, sem barra no final. Base dos @id do JSON-LD. */
+const home = new URL(withBase('/'), Astro.site).href.replace(/\/$/, '');
+
 const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', Astro.site).href;
-const ogImage = new URL('/og-orbixhub.jpg', Astro.site).href;
+const ogImage = new URL(withBase('og-orbixhub.jpg'), Astro.site).href;
 const ogImageAlt = 'Oficina mecânica organizada, com o sistema OrbixHub em uso no atendimento.';
 
 const structuredData = {
@@ -20,19 +29,19 @@ const structuredData = {
   '@graph': [
     {
       '@type': 'Organization',
-      '@id': `${site.url}/#organization`,
+      '@id': `${home}/#organization`,
       name: site.name,
-      url: `${site.url}/`,
+      url: `${home}/`,
       email: contact.email,
-      logo: new URL('/favicon.svg', Astro.site).href,
+      logo: new URL(withBase('favicon.svg'), Astro.site).href,
     },
     {
       '@type': 'WebSite',
-      '@id': `${site.url}/#website`,
+      '@id': `${home}/#website`,
       name: site.name,
-      url: `${site.url}/`,
+      url: `${home}/`,
       inLanguage: site.locale,
-      publisher: { '@id': `${site.url}/#organization` },
+      publisher: { '@id': `${home}/#organization` },
     },
     {
       '@type': 'SoftwareApplication',
@@ -41,14 +50,14 @@ const structuredData = {
       operatingSystem: 'Web, Android, Windows',
       description:
         'Sistema de gestão para oficinas com ordens de serviço, clientes, estoque, caixa e relatórios.',
-      url: `${site.url}/`,
-      publisher: { '@id': `${site.url}/#organization` },
+      url: `${home}/`,
+      publisher: { '@id': `${home}/#organization` },
       offers: {
         '@type': 'Offer',
         price: '89.00',
         priceCurrency: 'BRL',
         availability: 'https://schema.org/InStock',
-        url: `${site.url}/#planos`,
+        url: `${home}/#planos`,
       },
     },
   ],
@@ -85,7 +94,7 @@ const structuredData = {
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
 
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-body" preload />

@@ -4,9 +4,18 @@ import sitemap from '@astrojs/sitemap';
 
 import { site } from './site.config.ts';
 
+// Destino da publicação. O padrão é o domínio próprio de site.config.ts; as variáveis de
+// ambiente existem para o GitHub Pages servir a página em orbixsystem.github.io/OrbixLP
+// enquanto o DNS de orbixsystem.com ainda aponta para outro lugar. Apagar SITE_URL e
+// BASE_PATH nas variáveis do repositório devolve o site ao domínio próprio, sem tocar
+// no código.
+const siteUrl = process.env.SITE_URL || site.url;
+const base = process.env.BASE_PATH || '/';
+
 // https://astro.build/config
 export default defineConfig({
-  site: site.url,
+  site: siteUrl,
+  base,
   trailingSlash: 'never',
   compressHTML: true,
 
