@@ -119,28 +119,19 @@ Cloudflare Pages, S3 + CloudFront, Nginx).
 roda `astro build` e envia `dist/` como artefato. O Pages está em modo *GitHub Actions* —
 não há branch `gh-pages`.
 
-O endereço não está escrito no workflow. Ele sai de duas **variáveis do repositório**
-(Settings → Secrets and variables → Actions → Variables), que sobrescrevem o padrão de
-`astro.config.mjs`:
+O site responde em **https://orbixsystem.com** (o `www` redireciona para o apex). O
+domínio próprio está configurado em Settings → Pages e replicado em `public/CNAME`, que a
+build copia para `dist/` — assim o domínio sobrevive a qualquer redeploy.
 
-| Variável    | Valor atual                    | Para que serve                              |
-| ----------- | ------------------------------ | ------------------------------------------- |
-| `SITE_URL`  | `https://orbixsystem.github.io` | canonical, Open Graph, JSON-LD e sitemap    |
-| `BASE_PATH` | `/OrbixLP`                     | prefixo dos assets (página de projeto)      |
+`astro.config.mjs` aceita as variáveis de repositório `SITE_URL` e `BASE_PATH` para
+sobrescrever o destino (foi assim que a página ficou no ar em
+`orbixsystem.github.io/OrbixLP` enquanto o DNS não apontava para o GitHub). Hoje **nenhuma
+das duas está definida**, então valem os padrões: `site.url` de `site.config.ts` e
+`base: '/'`.
 
-Elas existem porque o domínio próprio ainda não aponta para o GitHub. **Para migrar para
-`orbixsystem.com`:**
-
-1. No DNS do domínio, troque os quatro registros `A` do apex pelos IPs do GitHub Pages
-   (`185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`).
-   O subdomínio `hub` aponta para o servidor de produção do app e **não deve ser tocado**.
-2. Em Settings → Pages, informe `orbixsystem.com` em *Custom domain* e marque
-   *Enforce HTTPS* assim que o certificado sair.
-3. **Apague** as variáveis `SITE_URL` e `BASE_PATH` e rode o workflow de novo: sem elas,
-   valem os padrões (`site.url` de `site.config.ts` e `base: '/'`).
-
-A linha `Sitemap:` de `public/robots.txt` já aponta para `https://orbixsystem.com` — o
-destino final.
+O DNS de `orbixsystem.com` está na Squarespace: quatro registros `A` no apex para
+`185.199.108–111.153` e um `CNAME` de `www` para `orbixsystem.github.io`. Os subdomínios
+`hub` (produção do app) e os demais são registros próprios e independentes do apex.
 
 ### Variável de ambiente
 
